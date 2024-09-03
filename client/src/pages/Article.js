@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import articleContent from "./article-content";
 import Articles from "../components/Articles";
 import NotFound from "./NotFound";
+import CommentsList from "../components/CommentsList";
 
 function Article() {
   const { name } = useParams();
   const article = articleContent.find((article) => article.name === name);
+  const [articleInfo, setArticleInfo] = useState({ comments: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`/api/articles/${name}`);
+      const body = await result.json();
+      console.log(body);
+      setArticleInfo(body);
+    };
+    fetchData();
+    console.log("Component Mounted");
+  }, [name]);
+
   if (!article) return <NotFound />;
   const otherArticles = articleContent.filter(
     (article) => article.name !== name
@@ -17,10 +31,11 @@ function Article() {
         {article.title}
       </h1>
       {article.content.map((paragraph, index) => (
-        <p className="mx-auto" leading-relaxed text-base mb-4>
+        <p key={index} className="mx-auto" leading-relaxed text-base mb-4>
           {paragraph}
         </p>
       ))}
+      <CommentsList comments={articleInfo.comments} />
       <h1 className="sm:text-2xl text-xl font-bold my-4 text-gray-900">
         Other Articles
       </h1>
