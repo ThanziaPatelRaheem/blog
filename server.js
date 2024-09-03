@@ -2,18 +2,6 @@ const express = require("express");
 const app = express();
 const PORT = process.env.port || 8000;
 
-const articlesInfo = {
-  "learn-react": {
-    comments: [],
-  },
-  "learn-node": {
-    comments: [],
-  },
-  "my-thoughts-on-learning-react": {
-    comments: [],
-  },
-};
-
 app.use(express.json({ extended: false }));
 
 app.post("/api/articles/:name/add-comments", (req, res) => {
