@@ -7,7 +7,7 @@ function AddComponentForm({ articleName, setArticleInfo }) {
     const result = await fetch(`/api/articles/${articleName}/add-comments`, {
       method: "post",
       body: JSON.stringify({ username, text: commentText }),
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
     });
@@ -31,6 +31,13 @@ function AddComponentForm({ articleName, setArticleInfo }) {
       <label className="block text-gray-700 text-sm font-bold mb-2">
         Comment :
       </label>
+      <textarea
+        rows="4"
+        cols="50"
+        value={commentText}
+        onChange={(e) => setCommentText(e.target.value)}
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline"
+      />
       <button
         onClick={() => addComments()}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
